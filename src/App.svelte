@@ -56,17 +56,18 @@ async function checkSolution() {
 
     penguinComponent.startRight();
 
-    solution = '';
-
     await tick();
 
     if (!allDone) {
       getNewNumbers();
     } 
-    solutionInput.focus();
+   
   } else {
     penguinComponent.startWrong();
   }
+
+  solution = '';
+  solutionInput.focus();
 }
 
 </script>
@@ -82,14 +83,20 @@ async function checkSolution() {
   </div>
   <div class="flex w-1/2 justify-center items-end">
     <div class="w-1/2">
-      {#if $activeRow > -1 && $activeCol > -1}
+      {#if $activeRow > -1 && $activeCol > -1 && !allDone}
         <div class="flex mb-4">
           <span class="text-4xl">
             {$numberRows[$activeRow]} x {$numberCols[$activeCol]} = 
           </span>
-          <input bind:value={solution} bind:this={solutionInput} on:keydown={checkCommit} type="number" class="border border-blue-500 h-10 w-16 rounded text-3xl p-2 mx-2 text-right" maxlength="2"/>
+          <input bind:value={solution} bind:this={solutionInput} on:keydown={checkCommit} type="number" class="border border-blue-500 h-10 w-16 rounded text-3xl p-2 mx-2 text-right" maxlength="3"/>
           <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click="{checkSolution}">
             ✓
+          </button>
+        </div>
+      {:else}
+        <div class="flex mb-4 justify-center">
+          <button on:click={startAll} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Aufgaben starten
           </button>
         </div>
       {/if}
@@ -97,15 +104,4 @@ async function checkSolution() {
     </div>
   </div>
 
-</div>
-
-
-<div class="flex w-1/2 justify-between">
-  <button on:click={startMixed} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-    Aufgaben gemischt
-  </button>
-
-  <button on:click={startAll} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-    Aufgaben normal
-  </button>
 </div>
